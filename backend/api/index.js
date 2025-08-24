@@ -76,25 +76,30 @@ app.get("/:shortId", async (req, res) => {
   }
 });
 
+// Permitir o domínio do seu frontend
 const allowedOrigins = [
   "https://url-shortner-frontend-kappa-sooty.vercel.app",
-  // Adicione aqui outros domínios que quer liberar
+  // adicione outros domínios que possam acessar a API
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // para testes em curl/postman
+    // Permite requisições sem origem (como curl/postman)
+    if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = "O CORS policy não permite essa origem " + origin;
+      const msg = `Origin ${origin} não autorizado pelo CORS`;
       return callback(new Error(msg), false);
     }
     return callback(null, true);
   },
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
+
+// Responde às requisições OPTIONS (preflight)
 app.options("*", cors(corsOptions));
 
 // Exporta o handler para o Vercel processar como lambda/serverless function
