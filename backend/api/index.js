@@ -97,10 +97,8 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(cors(corsOptions));
-
-// Responde às requisições OPTIONS (preflight)
-app.options("*", cors(corsOptions));
+app.use(cors());
+app.options("*", cors());
 
 // Exporta o handler para o Vercel processar como lambda/serverless function
 module.exports.handler = serverless(app);
