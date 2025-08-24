@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 const UrlShortener = () => {
   const [longUrl, setLongUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
@@ -26,10 +28,10 @@ const UrlShortener = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/url/shorten", {
+      const res = await axios.post(`${BACKEND_URL}/api/url/shorten`, {
         longUrl,
       });
-      setShortUrl(`http://localhost:5000/${res.data.shortId}`);
+      setShortUrl(`${BACKEND_URL}/${res.data.shortId}`);
     } catch (err) {
       setError(err.response?.data || "Erro ao encurtar URL");
     }
